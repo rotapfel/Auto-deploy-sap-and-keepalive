@@ -2,7 +2,7 @@ name: 自动保活 SAP
 
 on:
   schedule:
-    - cron: '45 23 * * *'      
+    - cron: '15 0 * * *'
   workflow_dispatch:          # 允许手动触发
 
 jobs:
@@ -41,12 +41,12 @@ jobs:
         echo "当前SG区域目标:"
         cf target
 
-    - name: '[仅定时任务] 等待 UTC 00:00 开始任务'
+    - name: '[仅定时任务] 等待 UTC 00:30 开始任务'
       if: github.event_name == 'schedule'
       run: |
-        echo "等待 UTC 时间到达 00:00 以开始重启流程..."
-        target_time="00:00"
-        deadline_time="01:00"
+        echo "等待 UTC 时间到达 00:30 以开始重启流程..."
+        target_time="00:30"
+        deadline_time="01:30"
 
         while true; do
           date_header=$(curl -sI https://www.ntp.org/ | grep -i '^date:')
@@ -59,8 +59,8 @@ jobs:
           current_time=$(echo "$date_header" | awk '{print $6}' | cut -c 1-5)
           current_hour=$(echo "$current_time" | cut -c 1-2)
           
-          if [[ "$current_hour" == "23" ]]; then
-            echo "等待午夜... 当前 UTC 时间: $current_time"
+          if [[ "$current_hour" == "00" ]]; then
+            echo "等待目标时间... 当前 UTC 时间: $current_time"
             sleep 60
             continue
           fi
@@ -71,7 +71,7 @@ jobs:
           fi
 
           if [[ "$current_time" > "$target_time" || "$current_time" == "$target_time" ]]; then
-            echo "时间到达或超过 00:00 UTC (北京时间 08:00)，开始执行重启任务。"
+            echo "时间到达或超过 00:30 UTC (北京时间 08:30)，开始执行重启任务。"
             break
           fi
           
@@ -180,12 +180,12 @@ jobs:
         echo "当前US区域目标:"
         cf target
 
-    - name: '[仅定时任务] 等待 UTC 00:00 开始任务'
+    - name: '[仅定时任务] 等待 UTC 00:30 开始任务'
       if: github.event_name == 'schedule'
       run: |
-        echo "等待 UTC 时间到达 00:00 以开始重启流程..."
-        target_time="00:00"
-        deadline_time="01:00"
+        echo "等待 UTC 时间到达 00:30 以开始重启流程..."
+        target_time="00:30"
+        deadline_time="01:30"
 
         while true; do
           date_header=$(curl -sI https://www.ntp.org/ | grep -i '^date:')
@@ -198,8 +198,8 @@ jobs:
           current_time=$(echo "$date_header" | awk '{print $6}' | cut -c 1-5)
           current_hour=$(echo "$current_time" | cut -c 1-2)
           
-          if [[ "$current_hour" == "23" ]]; then
-            echo "等待午夜... 当前 UTC 时间: $current_time"
+          if [[ "$current_hour" == "00" ]]; then
+            echo "等待目标时间... 当前 UTC 时间: $current_time"
             sleep 60
             continue
           fi
