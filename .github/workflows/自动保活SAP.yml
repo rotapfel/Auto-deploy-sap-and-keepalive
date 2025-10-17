@@ -2,7 +2,7 @@ name: 自动保活 SAP
 
 on:
   schedule:
-    - cron: '15 0 * * *'
+    - cron: '50 23 * * *'
   workflow_dispatch:          # 允许手动触发
 
 jobs:
