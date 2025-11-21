@@ -2,7 +2,7 @@ name: 自动保活 SAP
 
 on:
   schedule:
-    - cron: '50 23 * * *'
+    - cron: '20 08 * * *'
   workflow_dispatch:          # 允许手动触发
 
 jobs:
@@ -41,12 +41,12 @@ jobs:
         echo "当前SG区域目标:"
         cf target
 
-    - name: '[仅定时任务] 等待 UTC 00:30 开始任务'
+    - name: '[仅定时任务] 等待 UTC 08:30 开始任务'
       if: github.event_name == 'schedule'
       run: |
-        echo "等待 UTC 时间到达 00:30 以开始重启流程..."
-        target_time="00:30"
-        deadline_time="01:30"
+        echo "等待 UTC 时间到达 08:30 以开始重启流程..."
+        target_time="08:30"
+        deadline_time="09:30"
 
         while true; do
           date_header=$(curl -sI https://www.ntp.org/ | grep -i '^date:')
@@ -71,7 +71,7 @@ jobs:
           fi
 
           if [[ "$current_time" > "$target_time" || "$current_time" == "$target_time" ]]; then
-            echo "时间到达或超过 00:30 UTC (北京时间 08:30)，开始执行重启任务。"
+            echo "时间到达或超过 08:30 UTC (北京时间 08:30)，开始执行重启任务。"
             break
           fi
           
@@ -180,12 +180,12 @@ jobs:
         echo "当前US区域目标:"
         cf target
 
-    - name: '[仅定时任务] 等待 UTC 00:30 开始任务'
+    - name: '[仅定时任务] 等待 UTC 08:30 开始任务'
       if: github.event_name == 'schedule'
       run: |
-        echo "等待 UTC 时间到达 00:30 以开始重启流程..."
-        target_time="00:30"
-        deadline_time="01:30"
+        echo "等待 UTC 时间到达 08:30 以开始重启流程..."
+        target_time="08:30"
+        deadline_time="09:30"
 
         while true; do
           date_header=$(curl -sI https://www.ntp.org/ | grep -i '^date:')
@@ -210,7 +210,7 @@ jobs:
           fi
 
           if [[ "$current_time" > "$target_time" || "$current_time" == "$target_time" ]]; then
-            echo "时间到达或超过 00:00 UTC (北京时间 08:00)，开始执行重启任务。"
+            echo "时间到达或超过 08:30 UTC (北京时间 08:30)，开始执行重启任务。"
             break
           fi
           
